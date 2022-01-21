@@ -1,5 +1,14 @@
+from ast import Or
+from multiprocessing.connection import wait
+import os
+import time
+import re
+import json
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+from collections import Counter as cnt
 from selenium.webdriver.common.by import By
 
 class newBot:
@@ -21,15 +30,27 @@ class newBot:
             origens = []
             
             i=0
-            while i<5:
 
-                elements = self.driver.find_element_by_class_name('freight-card')
+            elements = self.driver.find_elements_by_class_name('freight-card')
 
-                for elem in elements:
-                    leitura = elem.get_attribute('innerText')
-                    print(leitura)
+            for elem in elements:
+                # leitura = elem.find_element_by_class_name('information-content').text
+                # print(leitura)
+                leitura = elem.find_element(By.CLASS_NAME, 'information-content').text
+                print(leitura)
+            
 
 
+            # while i<5:
 
+            #     elements = self.driver.find_element_by_class_name('freight-card')
+
+            #     for elem in elements:
+            #         print("Entrou no for")
+            #         leitura = elem.get_attribute('innerText')
+            #         print(leitura)
+
+
+            #     i+=1
         except:
             self.driver.close()
