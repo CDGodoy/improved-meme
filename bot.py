@@ -30,27 +30,34 @@ class newBot:
             origens = []
             
             i=0
+            itensPagina= 20
+            for j in range(1, int(itensPagina)):
+                print("Entrou no for")
+                
+                origem = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[1]/div[2]/p[1]/strong').text
+                destino = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[1]/div[2]/p[2]/strong').text
 
-            elements = self.driver.find_elements_by_class_name('freight-card')
 
-            for elem in elements:
-                # leitura = elem.find_element_by_class_name('information-content').text
-                # print(leitura)
-                leitura = elem.find_element(By.CLASS_NAME, 'information-content').text
-                print(leitura)
+                print("Origem: "+ origem)
+                print("Destino: " + destino)
+
+
+
+
             
-
-
-            # while i<5:
-
-            #     elements = self.driver.find_element_by_class_name('freight-card')
-
-            #     for elem in elements:
-            #         print("Entrou no for")
-            #         leitura = elem.get_attribute('innerText')
-            #         print(leitura)
-
-
-            #     i+=1
         except:
             self.driver.close()
+
+        # //*[@id="freights"]/li[1]/div[1]/div[1]/div[2]/p[1]/strong
+
+        # /html/body/div[1]/div[1]/div[3]/main/div[3]/ul/li[1]/div[1]/div[1]/div[2]/p[1]/strong
+        # //*[@id="freights"]/li[1]/div[1]/div[1]/div[2]/p[1]/strong
+
+        # /html/body/div[1]/div[1]/div[3]/main/div[3]/ul/li[1]/div[1]/div[1]/div[2]/p[2]/strong
+        # //*[@id="freights"]/li[1]/div[1]/div[1]/div[2]/p[2]/strong
+
+        # /html/body/div[1]/div[1]/div[3]/main/div[3]/ul/li[2]/div[1]/div[1]/div[2]/p[1]/strong
+        # //*[@id="freights"]/li[2]/div[1]/div[1]/div[2]/p[1]/strong
+
+        # /html/body/div[1]/div[1]/div[3]/main/div[3]/ul/li[2]/div[1]/div[1]/div[2]/p[2]/strong
+        # //*[@id="freights"]/li[2]/div[1]/div[1]/div[2]/p[2]/strong
