@@ -1,10 +1,12 @@
 from ast import Or
+from cgitb import text
 from multiprocessing.connection import wait
 import os
 import time
 import re
 import json
 from datetime import datetime
+from numpy import obj2sctype
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
@@ -29,35 +31,23 @@ class newBot:
 
             origens = []
             
-            i=0
+
             itensPagina= 20
             for j in range(1, int(itensPagina)):
                 print("Entrou no for")
                 
                 origem = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[1]/div[2]/p[1]/strong').text
                 destino = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[1]/div[2]/p[2]/strong').text
+                veiculo = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[2]/p[1]/strong').text
+                carroceria = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[2]/p[2]/strong').text
+                peso = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[3]/p[1]/strong').text
+                preco = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[3]/p[2]/strong[1]').text
 
-
-                print("Origem: "+ origem)
-                print("Destino: " + destino)
-
-
-
-
-            
+                # print("Origem: " + origem)
+                # print("Destino: "+ destino)
+                # print("Veiculo: "+ veiculo)
+                # print("Carroceria: " + carroceria)
+                # print("Peso: " + peso)
+                # print("Preço: "+ preco)
         except:
             self.driver.close()
-
-        # //*[@id="freights"]/li[1]/div[1]/div[1]/div[2]/p[1]/strong
-
-        # /html/body/div[1]/div[1]/div[3]/main/div[3]/ul/li[1]/div[1]/div[1]/div[2]/p[1]/strong
-        # //*[@id="freights"]/li[1]/div[1]/div[1]/div[2]/p[1]/strong
-
-        # /html/body/div[1]/div[1]/div[3]/main/div[3]/ul/li[1]/div[1]/div[1]/div[2]/p[2]/strong
-        # //*[@id="freights"]/li[1]/div[1]/div[1]/div[2]/p[2]/strong
-
-        # /html/body/div[1]/div[1]/div[3]/main/div[3]/ul/li[2]/div[1]/div[1]/div[2]/p[1]/strong
-        # //*[@id="freights"]/li[2]/div[1]/div[1]/div[2]/p[1]/strong
-
-        # /html/body/div[1]/div[1]/div[3]/main/div[3]/ul/li[2]/div[1]/div[1]/div[2]/p[2]/strong
-        # //*[@id="freights"]/li[2]/div[1]/div[1]/div[2]/p[2]/strong
