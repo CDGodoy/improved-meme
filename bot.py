@@ -28,7 +28,7 @@ class newBot:
             arquivo = open("truckpad.csv", 'a')
         else:
             arquivo = open("truckpad.csv", 'a')
-            arquivo.write("Origem,Destino,Veiculo,Carroceria,Peso,Preco,Data da Consulta\n")
+            arquivo.write('"Origem";"Destino";"Veiculo";"Carroceria";"Peso";"Preço";"Data da Consulta"\n')
 
         try:
             #Formato dos links
@@ -57,9 +57,9 @@ class newBot:
                 carroceria = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[2]/p[2]/strong').text
                 peso = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[3]/p[1]/strong').text
                 preco = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[3]/p[2]/strong[1]').text
-                hora = datetime.strftime(datetime.now(), '%Y%m%d')
+                hora = datetime.strftime(datetime.now(), '%Y/%m/%d')
                 
-                arquivo.write(origem + ',' + destino + ',' + veiculo + ',' + carroceria + ',' + peso + ',' + preco  + ',' + hora + '\n')
+                arquivo.write('"'+ origem + '" ;"' + destino + '" ;"' + veiculo + '" ;"' + carroceria + '" ;"' + peso + '" ;"' + preco  + '" ;"' + hora + '"\n')
                 #DEBUG
                 # print("-----------------------------------\n")
 
