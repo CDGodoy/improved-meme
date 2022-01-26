@@ -35,8 +35,11 @@ class newBot:
             itensPagina = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/main/div[2]/h2').text
             itensPagina = itensPagina.split()
             itensPagina = int(itensPagina[0])
-            if itensPagina < 20:
+            if itensPagina <= 20:
                 itensPagina = itensPagina
+            else:
+                paginas = itensPagina % 20
+                itensPagina = 20
 
             for j in range(1, itensPagina + 1):
                 print("Entrou no for")
