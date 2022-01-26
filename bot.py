@@ -24,13 +24,21 @@ class newBot:
     def truckPad(self):
         
         try:
-            #https://www.truckpad.com.br/fretes/carga-de-campo-grande-ms/para-costa-rica-ms/?por-ordem-de=data-coleta
-            site = 'https://www.truckpad.com.br/fretes/'
+            
+            #https://www.truckpad.com.br/fretes/carga-de-nome-da-cidade-uf/para-nome-da-cidade-uf/
+            site = 'https://www.truckpad.com.br/fretes/carga-de-sao-paulo-sp/para-sao-paulo-sp/'
             self.driver.get(site)
             self.driver.implicitly_wait(10) #Aguardando para o site carregar
 
-            itensPagina= 20
-            for j in range(1, int(itensPagina)):
+            #/html/body/div[1]/div[1]/div[3]/main/div[2]/h2
+            
+            itensPagina = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/main/div[2]/h2').text
+            itensPagina = itensPagina.split()
+            itensPagina = int(itensPagina[0])
+            if itensPagina < 20:
+                itensPagina = itensPagina
+
+            for j in range(1, itensPagina + 1):
                 print("Entrou no for")
                 
                 origem = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[1]/div[2]/p[1]/strong').text
@@ -39,13 +47,18 @@ class newBot:
                 carroceria = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[2]/p[2]/strong').text
                 peso = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[3]/p[1]/strong').text
                 preco = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[3]/p[2]/strong[1]').text
-                hora = datetime.now()
+                hora = datetime.strftime(datetime.now(), '%Y%m%d')
 
-                # print("Origem: " + origem)
-                # print("Destino: "+ destino)
-                # print("Veiculo: "+ veiculo)
-                # print("Carroceria: " + carroceria)
-                # print("Peso: " + peso)
-                # print("Preço: "+ preco)
+                print("-----------------------------------\n")
+
+                print("Origem: " + origem)
+                print("Destino: "+ destino)
+                print("Veiculo: "+ veiculo)
+                print("Carroceria: " + carroceria)
+                print("Peso: " + peso)
+                print("Preço: "+ preco)
+                print("Hora: "+ hora)
+
+            self.driver.close()        
         except:
             self.driver.close()
