@@ -1,5 +1,6 @@
 from ast import Or
 from cgitb import text
+from mimetypes import init
 from multiprocessing.connection import wait
 import os.path
 import site
@@ -15,6 +16,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+        #-----DEFINA AS ROTAS DE ACORDO COM OS LINKS------
+        #https://www.truckpad.com.br/fretes/
+        #https://www.truckpad.com.br/fretes/carga-de-nome-da-cidade-uf/
+        #https://www.truckpad.com.br/fretes/carga-de-nome-da-cidade-uf/para-nome-da-cidade-uf/
+        #https://www.truckpad.com.br/fretes/carga-de-nome-da-cidade-uf/para-nome-da-cidade-uf/?pagina=2
+
 class newBot:
     
     def __init__(self, nome_bot):
@@ -24,15 +31,7 @@ class newBot:
         self.chrome_options.add_argument('--disable-dev-shm-usage')
         #---------------LEMBRE-SE DE ALTERAR O CAMINHO DO WEBDRIVER-----------------
         self.driver = webdriver.Chrome(executable_path=r"C:\bin\chromedriver.exe")
-        #---------------LEMBRE-SE DE ALTERAR O SITE AQUI-----------------
-        #Formato dos links
-        #https://www.truckpad.com.br/fretes/
-        #https://www.truckpad.com.br/fretes/carga-de-nome-da-cidade-uf/
-        #https://www.truckpad.com.br/fretes/carga-de-nome-da-cidade-uf/para-nome-da-cidade-uf/
-        #https://www.truckpad.com.br/fretes/carga-de-nome-da-cidade-uf/para-nome-da-cidade-uf/?pagina=2
-        # pagina = 1
-        # self.site = 'https://www.truckpad.com.br/fretes/carga-de-sao-paulo-sp/para-sao-paulo-sp/?pagina={pagina:.d}'
-        
+   
     
     def allItems(self):
         #Abrindo arquivo para salvar
@@ -42,7 +41,7 @@ class newBot:
         else:
             arquivo = open("truckpad"+data+".csv", 'w')
             arquivo.write('Origem;Destino;distancia;caminhoes;carroceria;rastreador;Carga Completa / Complemento;tipo de carregamento;natureza da carga;peso;valor;Frete(R$) por Km;Data da Consulta\n')
-
+        arquivo.close()
         try:           
             #pagina = 1
             site = 'https://www.truckpad.com.br/fretes/?pagina={0}'
@@ -66,9 +65,11 @@ class newBot:
 
         for i in range(1, paginas+1):
             try:
-                # self.driver.get(site.format(i))
 
                 for j in range(1, itenspagina+1):
+                    
+                    arquivo = open("truckpad"+data+".csv", 'a')
+
                     self.chrome_options = Options()
                     self.chrome_options.add_argument('--headless')
                     self.chrome_options.add_argument('--no-sandbox')
@@ -76,18 +77,12 @@ class newBot:
                     #---------------LEMBRE-SE DE ALTERAR O CAMINHO DO WEBDRIVER-----------------
                     self.driver = webdriver.Chrome(executable_path=r"C:\bin\chromedriver.exe")
 
-                    print("criou driver")
-
                     self.driver.get(site.format(i))
-
-                    print("abriu site")
 
                     wait = WebDriverWait(self.driver, 10)
                     wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[2]/div/a')))
 
                     self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[2]/div/a').click()
-                                        
-                    print("Clicou")
                     
                     wait = WebDriverWait(self.driver, 50)
 
@@ -110,43 +105,11 @@ class newBot:
 
                     arquivo.write('"'+origem + '";"' + destino + '";"' + distancia + '";"' + caminhoes + '";"' + carroceria + '";"' + rastreador + '";"' + cargaCompleta + 
                     '";"' + tipoDeCarga + '";"' + naturezaDaCarga + '";"' + peso + '";"' + valor + '";"' + fretePorKm + '";"' + data + '"\n')
+                    arquivo.close()
 
             except:
                 self.driver.close()
-
-        # for i in range(1, paginas):
-
-
-        # try:
-        #     #self.driver.get(self.site)
-        #     # self.driver.implicitly_wait(50)
-
-        #     wait = WebDriverWait(self.driver, 10)
-        #     wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="freights"]/li[1]/div[2]/div/a')))
-
-        #     self.driver.find_element(By.XPATH, '//*[@id="freights"]/li[1]/div[2]/div/a').click()
-            
-        #     origem = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/aside/div/div[1]/p[1]/strong').text
-        #     destino = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/aside/div/div[1]/p[2]/strong').text
-        #     distancia = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/aside/div/p[2]/strong').text
-        #     caminhoes = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/main/div[5]/div/section[1]/ul[1]').text
-        #     carroceria = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/main/div[5]/div/section[1]/ul[2]').text
-        #     rastreador = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/main/div[5]/div/section[2]/p[1]/strong').text
-        #     cargaCompleta = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/main/div[6]/div/section[1]/p[2]/strong').text
-        #     tipoDeCarga = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/main/div[6]/div/section[1]/p[3]/strong').text
-        #     naturezaDaCarga = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/main/div[6]/div/section[2]/p[3]/strong').text
-        #     peso = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/main/div[6]/div/section[2]/p[1]/strong').text
-        #     valor = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/aside/div/p[1]/strong[1]').text
-        #     fretePorKm = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[3]/main/div[7]/div/section[1]/p[2]/strong').text
-
-        #     # self.showAllItems(origem, destino, distancia, caminhoes, carroceria, rastreador, cargaCompleta, tipoDeCarga, naturezaDaCarga, peso, valor, fretePorKm)
-            
-
-
-
-        #     self.driver.close()
-        # except:
-        #     self.driver.close()    
+        
     
     def frontPage(self):
         
@@ -182,7 +145,7 @@ class newBot:
                 preco = self.driver.find_element(By.XPATH, '//*[@id="freights"]/li['+str(j)+']/div[1]/div[3]/p[2]/strong[1]').text
                 hora = datetime.strftime(datetime.now(), '%Y/%m/%d')
                 
-                arquivo.write(origem + ';' + destino + ';' + veiculo + ';' + carroceria + ';' + peso + ';' + preco  + ';' + hora + '\n')
+                arquivo.write('"'+ origem + '";"' + destino + '";"' + veiculo + '";"' + carroceria + '";"' + peso + '";"' + preco  + '";"' + hora + '"\n')
 
             self.driver.close()        
         except:
